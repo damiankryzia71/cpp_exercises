@@ -16,7 +16,7 @@ class Stack
 
     private:
         T* data = nullptr;
-        int size;
+        int topIndex;
         int capacity;
 };
 

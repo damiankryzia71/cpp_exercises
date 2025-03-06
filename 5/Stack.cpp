@@ -4,16 +4,16 @@
 template <typename T>
 Stack<T>::Stack()
 {
-    size = 0;
-    capacity = 50;
+    capacity = 100;
+    topIndex = -1;
     data = new T[capacity];
 }
 
 template <typename T>
 Stack<T>::Stack(int newCapacity)
 {
-    size = 0;
     capacity = newCapacity;
+    topIndex = -1;
     data = new T[capacity];
 }
 
@@ -26,44 +26,43 @@ Stack<T>::~Stack()
 template <typename T>
 void Stack<T>::push(T element)
 {
-    if (size == capacity)
+    if (topIndex + 1 == capacity)
     {
         capacity *= 2;
         T* newData = new T[capacity];
-        for (int i = 0; i < size; i++)
+        for (int i = 0; i < topIndex + 1; i++)
         {
             newData[i] = data[i];
         }
         delete[] data;
         data = newData;
     }
-    data[size++] = element;
+
+    data[++topIndex] = element;
 }
 
 template <typename T>
 T Stack<T>::pop()
 {
-    if (size == 0)
-        throw std::out_of_range("Out of range error: stack is empty");
-    return data[size--];
+    if (topIndex < 0) throw std::out_of_range("Stack Underflow: Cannot pop from an empty stack.");
+    return data[topIndex--];
 }
 
 template <typename T>
 T Stack<T>::peek() const
 {
-    if (size == 0)
-        throw std::out_of_range("Out of range error: stack is empty");
-    return data[size - 1];
+    if (topIndex < 0) throw std::out_of_range("Stack Underflow: Cannot peek into an empty stack.");
+    return data[topIndex];
 }
 
 template <typename T>
 bool Stack<T>::isEmpty() const
 {
-    return size == 0;
+    return topIndex < 0;
 }
 
 template <typename T>
 int Stack<T>::getSize() const
 {
-    return size;
+    return topIndex + 1;
 }
